@@ -1,0 +1,39 @@
+study("MACD Leader Wellshore Adaptation", shorttitle="MACDL_WS")
+src=(input(close, title="Source"))
+shortLength = input(114, title="Fast Length") //19 for short time ... 12 default ... 6 long ... 114 trend analysis ... 70 long term refined  (cross:: 19/57)
+longLength = input(234, title="Slow Length") //39 for short time ... 26 default ... 13 long ... 234 trend analysis ... 400 long term refined (cross:: 39/117)
+sigLength = input(9, title="Signal Length") //9 for short time ... 9 for everything
+maLength = input(14, title="Moving Average Length")
+showMACD=input(false)
+showMACDSignal=input(false)
+ma(s,l) => ema(s,l)
+sema = ma( src, shortLength )
+lema = ma( src, longLength )
+i1 = sema + ma( src - sema, shortLength )
+i2 = lema + ma( src - lema, longLength )
+macdl = i1 - i2
+macd=sema-lema
+
+hline(0)
+plot( macdl, title="MACDLeader", color=lime, linewidth=2)
+plot(showMACD?macd:na, title="MACD", color=green)
+plot(showMACDSignal?sma(macd, sigLength):na, title="Signal", color=red)
+
+
+
+/////////////////////////////////////////MA STUFF
+maFTN= sma(macdl, maLength)
+
+plot(maFTN, color=red, title="MA(14)",linewidth=3)
+
+
+////////////////////////////////////////HIGHLIGHTS AND ALERTS
+
+longSig = crossover(macdl, maFTN)
+shortSig = crossover(maFTN, macdl)
+
+col = macdl > maFTN? aqua:fuchsia
+bgcolor(longSig or shortSig?yellow:col)
+
+alertcondition(longSig, "Long", "Long")
+alertcondition(shortSig, "Short", "Short")

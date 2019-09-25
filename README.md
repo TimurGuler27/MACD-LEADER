@@ -6,4 +6,4 @@ DIRECTIONS TO RUN
 2. Go to "Chart" on the top menu bar
 3. Click Pine Editor on the bottom menu bar in the chart window
 4. Copy and Paste the code in
-5. Save and the program will run by itself
+5. Save and Add to Chart and the program will run by itself
